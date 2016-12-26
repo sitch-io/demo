@@ -1,0 +1,87 @@
+version: '2'
+
+services:
+  elasticsearch:
+    image: docker.io/elasticsearch:5.0
+    container_name: sitch-elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    volumes:
+      - /opt/elasticsearch:/var/lib/elasticsearch
+    networks:
+      - sitch_elk
+  logstash:
+    image: docker.io/sitch/logstash
+    container_name: sitch-logstash
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      ES_URL: http://sitch-elasticsearch:9200
+      GRAPHITE_HOST: sitch-influxdb
+      GRAPHITE_PORT: 2003
+      SLACK_WEBHOOK: ${SLACK_WEBHOOK}
+      SLACK_USERNAME: ${SLACK_USERNAME}
+      SLACK_ICON: ${SLACK_ICON}
+      VAULT_URL: ${VAULT_URL}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+    networks:
+      - sitch_elk
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: docker.io/kibana:5.0
+    container_name: sitch-kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://sitch-elasticsearch:9200
+    networks:
+      - sitch_elk
+    depends_on:
+      - elasticsearch
+  influxdb:
+    image: docker.io/influxdb:1.1.1-alpine
+    container_name: sitch-influxdb
+    ports:
+      - "2003:2003"
+      - "8083:8083"
+      - "8086:8086"
+    environment:
+      INFLUXDB_GRAPHITE_ENABLED: "true"
+    volumes:
+      - /opt/influxdb:/var/lib/influxdb
+    networks:
+      - sitch_elk
+  chronograf:
+    image: docker.io/chronograf:1.0.0-rc1
+    container_name: sitch-chronograf
+    ports:
+      - "1000:1000"
+    volumes:
+      - /opt/chronograf:/var/lib/chronograf
+    networks:
+      - sitch_elk
+  web:
+    image: docker.io/sitch/web
+    container_name: sitch-web
+    ports:
+      - "443:443"
+      - "1000:1000"
+      - "8443:8443"
+    environment:
+      SERVER_NAME: ${SERVER_NAME}
+      KIBANA_URL: http://sitch-kibana:5601
+      CHRONOGRAF_URL: http://sitch-chronograf:1000
+    volumes:
+      - /opt/shared/feed/production/:/usr/share/nginx/html/
+      - /etc/letsencrypt:/letsencrypt
+    networks:
+      - sitch_elk
+
+networks:
+  sitch_elk:
+    driver: bridge
