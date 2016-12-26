@@ -29,6 +29,7 @@ Here's the process for setting up the service side of SITCH:
         certonly
 
 1. Start Vault (replace SERVER_DNS_NAME_HERE as in the prior step):
+
         docker run -d  \
         --cap-add=IPC_LOCK \
         -p 8200:8200  \
@@ -36,17 +37,20 @@ Here's the process for setting up the service side of SITCH:
         -e 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/SERVER_DNS_NAME_HERE/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/SERVER_DNS_NAME_HERE/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}' \
         --name sitch_vault \
         vault server
+
 1. Unseal the vault:
     1. `docker exec sitch_vault vault init --tls-skip-verify`
     1. You'll notice that it returns a list of keys.  Three of those keys must be used to unseal the Vault.  Record these keys in a password manager!
     1. Run this: `docker exec -it sitch_vault vault unseal --tls-skip-verify` and you'll be prompted to enter a key.  Use one of the keys from the prior step.  Do this three times total and the vault will unseal.
 1. Generate the Logstash certificates (VAULT_URL is https://YOUR_SERVER_NAME:8200. VAULT_TOKEN is the root token you recorded just before going through the process of unsealing the vault.  LS_CLIENTNAME is just a valid hostname, does not need to resolve.  LS_SERVERNAME is the same name you used in generating your certs with the certbot docker container, above. ):
+
         docker run -it \
         -e VAULT_URL=$VAULT_URL \
         -e VAULT_TOKEN=$VAULT_TOKEN \
         -e LS_CLIENTNAME=$LS_CLIENTNAME \
         -e LS_SERVERNAME=$LS_SERVERNAME \
         docker.io/sitch/self_signed_seeder
+
 1. Run the feed builder.  See instructions here: https://hub.docker.com/r/sitch/feed_builder/
 1. Clone this repo to the CoreOS instance, and descend into the root directory
     of the repository:
