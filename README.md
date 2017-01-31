@@ -1,6 +1,8 @@
 # Sitch demo environment
 ## Makes things a _little_ bit easier
 
+[![Join the chat at https://gitter.im/sitch-io/demo](https://badges.gitter.im/sitch-io/demo.svg)](https://gitter.im/sitch-io/demo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This docker-compose configuration will make setting up a test environment for
 SITCH a little easier.
 
