@@ -4,13 +4,10 @@ services:
   elasticsearch:
     image: docker.io/elasticsearch:5.0
     container_name: sitch-elasticsearch
-    ports:
-      - "9200:9200"
-      - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
-      - /opt/elasticsearch:/var/lib/elasticsearch
+      - /opt/elasticsearch:/usr/share/elasticsearch/data
     networks:
       - sitch_elk
   logstash:
@@ -19,6 +16,9 @@ services:
     ports:
       - "5000:5000"
       - "5001:5001"
+    links:
+      - "elasticsearch:9200"
+      - "influxdb:2003"
     environment:
       ES_URL: http://sitch-elasticsearch:9200
       GRAPHITE_HOST: sitch-influxdb
@@ -35,8 +35,8 @@ services:
   kibana:
     image: docker.io/kibana:5.0
     container_name: sitch-kibana
-    ports:
-      - "5601:5601"
+    links:
+      - "elasticsearch:9200"
     environment:
       ELASTICSEARCH_URL: http://sitch-elasticsearch:9200
     networks:
@@ -46,10 +46,6 @@ services:
   influxdb:
     image: docker.io/influxdb:1.1.1-alpine
     container_name: sitch-influxdb
-    ports:
-      - "2003:2003"
-      - "8083:8083"
-      - "8086:8086"
     environment:
       INFLUXDB_GRAPHITE_ENABLED: "true"
     volumes:
@@ -59,8 +55,9 @@ services:
   chronograf:
     image: docker.io/chronograf:1.0.0-rc1
     container_name: sitch-chronograf
-    ports:
-      - "1000:1000"
+    links:
+      - "influxdb:8083"
+      - "influxdb:8086"
     volumes:
       - /opt/chronograf:/var/lib/chronograf
     networks:
@@ -75,10 +72,13 @@ services:
     environment:
       SERVER_NAME: ${SERVER_NAME}
       KIBANA_URL: http://sitch-kibana:5601
-      CHRONOGRAF_URL: http://sitch-chronograf:1000
+      CHRONOGRAF_URL: http://sitch-chronograf:10000
+    links:
+      - "chronograf:10000"
+      - "kibana:5601"
     volumes:
       - /opt/shared/feed/production/:/usr/share/nginx/html/
-      - /etc/letsencrypt:/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - sitch_elk
 

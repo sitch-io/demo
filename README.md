@@ -18,7 +18,8 @@ Here's the process for setting up the service side of SITCH:
   * Public DNS-resolving hostname assigned to the instance
 
 ### Doing the thing
-1. SSH into the instance and set up your certificates (fill in SERVER_DNS_NAME HERE with your server's DNS name):
+1. SSH into the instance and set up your certificates (fill in
+  SERVER_DNS_NAME_HERE with your server's DNS name):
 
         docker run -it --rm \
         -p 443:443 -p 80:80 \
@@ -36,13 +37,21 @@ Here's the process for setting up the service side of SITCH:
         -v /etc/letsencrypt/:/etc/letsencrypt/ \
         -e 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/SERVER_DNS_NAME_HERE/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/SERVER_DNS_NAME_HERE/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}' \
         --name sitch_vault \
-        vault server
+        vault:v0.6.0 server
 
 1. Unseal the vault:
     1. `docker exec sitch_vault vault init --tls-skip-verify`
-    1. You'll notice that it returns a list of keys.  Three of those keys must be used to unseal the Vault.  Record these keys in a password manager!
-    1. Run this: `docker exec -it sitch_vault vault unseal --tls-skip-verify` and you'll be prompted to enter a key.  Use one of the keys from the prior step.  Do this three times total and the vault will unseal.
-1. Generate the Logstash certificates (VAULT_URL is https://YOUR_SERVER_NAME:8200. VAULT_TOKEN is the root token you recorded just before going through the process of unsealing the vault.  LS_CLIENTNAME is just a valid hostname, does not need to resolve.  LS_SERVERNAME is the same name you used in generating your certs with the certbot docker container, above. ):
+    1. You'll notice that it returns a list of keys.  Three of those keys must
+    be used to unseal the Vault.  Record these keys in a password manager!
+    1. Run this: `docker exec -it sitch_vault vault unseal --tls-skip-verify`
+    and you'll be prompted to enter a key.  Use one of the keys from the prior
+    step.  Do this three times total and the vault will unseal.
+1. Generate the Logstash certificates (VAULT_URL is
+  https://YOUR_SERVER_NAME:8200. VAULT_TOKEN is the root token you recorded
+  just before going through the process of unsealing the vault.  LS_CLIENTNAME
+  is just a valid hostname, does not need to resolve.  LS_SERVERNAME is the
+  same name you used in generating your certs with the certbot docker
+  container, above. Must have 8200:TCP open.):
 
         docker run -it \
         -e VAULT_URL=$VAULT_URL \
@@ -51,13 +60,15 @@ Here's the process for setting up the service side of SITCH:
         -e LS_SERVERNAME=$LS_SERVERNAME \
         docker.io/sitch/self_signed_seeder
 
-1. Run the feed builder.  See instructions here: https://hub.docker.com/r/sitch/feed_builder/
+1. Run the feed builder.  See instructions here:
+  https://hub.docker.com/r/sitch/feed_builder/
 1. Clone this repo to the CoreOS instance, and descend into the root directory
     of the repository:
-        git clone https://github.com/sitch-io/sitch-demo && \
+        git clone https://github.com/sitch-io/demo && \
         cd sitch-demo
-1. Use your favorite editor (which is vi, right?? :trollface:) to complete the environment
-    variables in the .env file.
+1. Use your favorite editor (which is vi, right?? :trollface:) to complete the
+  environment variables in the .env file.  Retain the information in the file
+  securely (password manager, etc) and delete it when you're done.
 1. Use docker-compose to complete the setup of your environment:
     `docker-compose up`
 
@@ -77,5 +88,11 @@ Look at the table below for guidance.
 | 8443          | HTTPS access to Kibana.  Only needed for admins.                        |
 
 ### What's next??
-Set up your sensors (https://github.com/sitch-io/sensor) and watch your Slack
-channel for alerts.  Bonus points for creating a nice dashboard.
+Access control!  Make sure that 1000 and 8443 are only accessible to the right
+people by implementing OpenVPN and IP address restrictions, or some other
+method.  There are no authentication mechanisms implemented in the
+browser-accessible part of the application, yet.
+
+Finally: Set up your sensors (https://github.com/sitch-io/sensor) and watch
+your Slack channel for alerts.  Bonus points for creating a nice dashboard in
+Kibana and/or Chronograf.
