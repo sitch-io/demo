@@ -81,6 +81,9 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - sitch_elk
+    depends_on:
+      - chronograf
+      - kibana
 
 networks:
   sitch_elk:
