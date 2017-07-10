@@ -2,7 +2,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.io/elasticsearch:5.0
+    image: docker.io/elasticsearch:5.4.3-alpine
     container_name: sitch-elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
@@ -33,7 +33,7 @@ services:
     depends_on:
       - elasticsearch
   kibana:
-    image: docker.io/kibana:5.0
+    image: docker.io/kibana:5.4.3
     container_name: sitch-kibana
     links:
       - "elasticsearch:9200"
@@ -64,6 +64,7 @@ services:
       - sitch_elk
   kapacitor:
     image: docker.io/kapacitor:1.3
+    container_name: sitch-kapacitor
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
