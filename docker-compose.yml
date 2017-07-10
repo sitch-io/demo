@@ -2,7 +2,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.io/elasticsearch:5.4.3-alpine
+    image: docker.io/elasticsearch:5.2.2-alpine
     container_name: sitch-elasticsearch
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
