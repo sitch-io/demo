@@ -87,7 +87,39 @@ Look at the table below for guidance.
 | 80            | Only necessary while using certbot to obtain certs.                     |
 | 443           | Feeds served up on this port. Sensors must be able to access this port. |
 | 1000          | HTTPS access to Chronograf.  Only needed for admins.                    |
+| 5001          | Logstash port.  Needs to be open to each Sensor                         |
 | 8443          | HTTPS access to Kibana.  Only needed for admins.                        |
+
+Once events are flowing in, you'll need to tell Elasticsearch how to parse
+SITCH geolocation info.  Go to the Elasticsearch developer console and use this
+query to enable this functionality:
+
+```
+PUT _template/logstash/
+{
+  "template": "logstash-*",
+  "mappings": {
+    "_default_": {
+      "dynamic_templates": [
+        {
+          "string_fields": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "text"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "gps_location": {
+          "type": "geo_point"
+        }
+      }
+    }
+  }
+}
+
+```
 
 ### What's next??
 Access control!  Make sure that 1000 and 8443 are only accessible to the right
