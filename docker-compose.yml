@@ -2,7 +2,7 @@ version: '2'
 
 services:
   elasticsearch:
-    image: docker.io/elasticsearch:5.4.3-alpine
+    image: docker.io/elasticsearch:5.5.2
     container_name: sitch-elasticsearch
     logging:
       driver: journald
@@ -13,7 +13,7 @@ services:
     networks:
       - sitch_elk
   logstash:
-    image: docker.io/sitch/logstash
+    image: docker.io/sitch/logstash:v0.9
     container_name: sitch-logstash
     logging:
       driver: journald
@@ -87,7 +87,7 @@ services:
     ports:
       - "9092:9092"
   web:
-    image: docker.io/sitch/web
+    image: docker.io/sitch/web:v0.9
     container_name: sitch-web
     logging:
       driver: journald
