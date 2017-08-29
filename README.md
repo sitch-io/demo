@@ -6,6 +6,16 @@
 This docker-compose configuration will make setting up a test environment for
 SITCH a little easier.
 
+### Important Note
+
+If you've already set up the SITCH demo environment and you just want the
+updated app components for the ELK stack, use the release tagged `v0.9` from
+this repo.  That updates the ELK stack and leaves InfluxDB alone.  In order to
+update InfluxDB, the back-end ports in the `sitch-io/web` component will need
+to be changed.  If you're not looking to update InfluxDB, stay with `v0.9`
+
+ 
+
 Here's the process for setting up the service side of SITCH:
 
 ### Pre-requisites
