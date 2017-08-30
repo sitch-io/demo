@@ -87,6 +87,8 @@ services:
       - /opt/kapacitor:/var/lib/kapacitor
     links:
       - influxdb
+    depends_on:
+      - influxdb
     ports:
       - "9092:9092"
   web:
