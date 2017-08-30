@@ -13,7 +13,7 @@ services:
     networks:
       - sitch_elk
   logstash:
-    image: docker.io/sitch/logstash:v0.9
+    image: docker.io/sitch/logstash:v0.10
     container_name: sitch-logstash
     logging:
       driver: journald
@@ -22,11 +22,11 @@ services:
       - "5001:5001"
     links:
       - "elasticsearch:9200"
-      - "influxdb:2003"
+      - "influxdb:8086"
     environment:
-      ES_URL: http://sitch-elasticsearch:9200
-      GRAPHITE_HOST: sitch-influxdb
-      GRAPHITE_PORT: 2003
+      ES_URL: http://elasticsearch:9200
+      INFLUXDB_HOST: influxdb
+      INFLUXDB_PORT: 8086
       SLACK_WEBHOOK: ${SLACK_WEBHOOK}
       SLACK_USERNAME: ${SLACK_USERNAME}
       SLACK_ICON: ${SLACK_ICON}
@@ -36,6 +36,7 @@ services:
       - sitch_elk
     depends_on:
       - elasticsearch
+      - influxdb
   kibana:
     image: docker.io/kibana:5.5.1
     container_name: sitch-kibana
@@ -50,7 +51,7 @@ services:
     depends_on:
       - elasticsearch
   influxdb:
-    image: docker.io/influxdb:1.1.1-alpine
+    image: docker.io/influxdb:1.2.4
     container_name: sitch-influxdb
     logging:
       driver: journald
@@ -61,19 +62,21 @@ services:
     networks:
       - sitch_elk
   chronograf:
-    image: docker.io/chronograf:1.0.0-rc1
+    image: docker.io/chronograf:1.3
     container_name: sitch-chronograf
     logging:
       driver: journald
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      KAPACITOR_URL: http://kapacitor:9092
     links:
-      - "influxdb:8083"
       - "influxdb:8086"
     volumes:
       - /opt/chronograf:/var/lib/chronograf
     networks:
       - sitch_elk
   kapacitor:
-    image: docker.io/kapacitor:1.3
+    image: docker.io/kapacitor:1.3.0
     container_name: sitch-kapacitor
     logging:
       driver: journald
@@ -92,18 +95,16 @@ services:
     logging:
       driver: journald
     ports:
-      - "443:443"
       - "1000:1000"
       - "8443:8443"
     environment:
       SERVER_NAME: ${SERVER_NAME}
-      KIBANA_URL: http://sitch-kibana:5601
-      CHRONOGRAF_URL: http://sitch-chronograf:10000
+      KIBANA_URL: http://kibana:5601
+      CHRONOGRAF_URL: http://chronograf:8888
     links:
-      - "chronograf:10000"
+      - "chronograf:8888"
       - "kibana:5601"
     volumes:
-      - /opt/shared/feed/production/:/usr/share/nginx/html/
       - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - sitch_elk
