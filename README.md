@@ -14,14 +14,11 @@ this repo.  That updates the ELK stack and leaves InfluxDB alone.  In order to
 update InfluxDB, the back-end ports in the `sitch-io/web` component will need
 to be changed.  If you're not looking to update InfluxDB, stay with `v0.9`
 
- 
+
 
 Here's the process for setting up the service side of SITCH:
 
 ### Pre-requisites
-  * Accounts with:
-    * Twilio
-    * OpenCellID (API key required)
     * Resin.io
     * Slack
   * One provisioned instance (CoreOS preferred)
@@ -72,8 +69,6 @@ Here's the process for setting up the service side of SITCH:
         -e LS_SERVERNAME=$LS_SERVERNAME \
         docker.io/sitch/self_signed_seeder
 
-1. Run the feed builder.  See instructions here:
-  https://hub.docker.com/r/sitch/feed_builder/
 1. Clone this repo to the CoreOS instance, and descend into the root directory
     of the repository:
         git clone https://github.com/sitch-io/demo && \
@@ -86,19 +81,19 @@ Here's the process for setting up the service side of SITCH:
 
 ### Wrapping up
 If you've not been opening ports as you go along, let's have a look at your
-firewall to ascertain that you'e only got the necessary ports open, and only to
+firewall to ascertain that you've only got the necessary ports open, and only to
 the IPs where they're needed.
 Specifically, we're talking about outside access to the CoreOs instance.  If
 you're awesome, you'll implement this in CoreOS as well as your IAAS provider.  
 Look at the table below for guidance.
 
-| Port/Protocol | Purpose                                                                 |
-|---------------|-------------------------------------------------------------------------|
-| 80            | Only necessary while using certbot to obtain certs.                     |
-| 443           | Feeds served up on this port. Sensors must be able to access this port. |
-| 1000          | HTTPS access to Chronograf.  Only needed for admins.                    |
-| 5001          | Logstash port.  Needs to be open to each Sensor                         |
-| 8443          | HTTPS access to Kibana.  Only needed for admins.                        |
+| Port/Protocol | Purpose                                                                               |
+|---------------|---------------------------------------------------------------------------------------|
+| 80            | Only necessary while using certbot to obtain certs.                                   |
+| 443           | Certbot only.  We used to serve the feed on this port, but the feed is in Github now. |
+| 1000          | HTTPS access to Chronograf.  Only needed for admins.                                  |
+| 5001          | Logstash port.  Needs to be open to each Sensor                                       |
+| 8443          | HTTPS access to Kibana.  Only needed for admins.                                      |
 
 Once events are flowing in, you'll need to tell Elasticsearch how to parse
 SITCH geolocation info.  Go to the Elasticsearch developer console and use this
