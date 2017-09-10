@@ -21,8 +21,8 @@ Here's the process for setting up the service side of SITCH:
 ### Pre-requisites
     * Resin.io
     * Slack
-  * One provisioned instance (CoreOS preferred)
-    * At least 40GB of storage mounted at /opt
+  * One provisioned instance (CoreOS or Ubuntu 16.04 preferred)
+    * At least 20GB of storage mounted at /opt
     * 4GB RAM
   * Public DNS-resolving hostname assigned to the instance
 
