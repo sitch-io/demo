@@ -32,6 +32,7 @@ services:
       SLACK_ICON: ${SLACK_ICON}
       VAULT_URL: ${VAULT_URL}
       VAULT_TOKEN: ${VAULT_TOKEN}
+      XPACK_MONITORING_ENABLED: "false"
     networks:
       - sitch_elk
     depends_on:
@@ -46,6 +47,7 @@ services:
       - "elasticsearch:9200"
     environment:
       ELASTICSEARCH_URL: http://sitch-elasticsearch:9200
+      XPACK_MONITORING_ENABLED: "false"
     networks:
       - sitch_elk
     depends_on:
