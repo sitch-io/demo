@@ -1,4 +1,4 @@
-source .env
+source ../.env
 
 bash install-docker.sh
 bash lets-encrypt.sh
@@ -10,4 +10,4 @@ read VAULT_TOKEN
 export VAULT_TOKEN
 bash logstash.sh
 
-docker-compose up
+docker-compose -f ../docker-compose.yml up
