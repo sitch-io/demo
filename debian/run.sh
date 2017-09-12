@@ -10,4 +10,4 @@ read VAULT_TOKEN
 export VAULT_TOKEN
 bash logstash.sh
 
-docker-compose -f ../docker-compose.yml up
+docker-compose -f ../docker-compose.yml up -d
