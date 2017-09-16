@@ -6,8 +6,9 @@ install:
 - sudo apt-get update && sudo apt-get install -y curl
 - export MY_IP=$(curl -s https://api.ipify.org)
 - curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
+- sleep 10
 script:
-- echo "Public IP address: ${MY_IP}"
+- echo "Public IP address is ${MY_IP}"
 - echo "Waiting for IP to converge..."
 - sleep 20
 - echo "Our DNS name is currently pointing to `host ${DNS_NAME} | awk '{print $4}'`"
