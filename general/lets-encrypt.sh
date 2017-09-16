@@ -8,5 +8,6 @@ docker run -it --rm \
   certonly \
     --standalone \
     --email ${CERTBOT_EMAIL} \
+    --no-eff-email \
     --agree-tos \
     -d ${SERVER_NAME}
