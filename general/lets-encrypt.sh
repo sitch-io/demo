@@ -5,4 +5,8 @@ docker run -it --rm \
   -v "/etc/letsencrypt:/etc/letsencrypt" \
   -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
   quay.io/letsencrypt/letsencrypt:latest \
-  certonly
+  certonly \
+    --standalone \
+    --email ${CERTBOT_EMAIL} \
+    --agree-tos \
+    -d ${SERVER_NAME}

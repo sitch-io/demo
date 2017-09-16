@@ -6,7 +6,11 @@
 This docker-compose configuration will make setting up a test environment for
 SITCH a little easier.
 
-### Important Note
+### Important Notes
+
+Running this system requires that you agree to the terms of service for
+Let's Encrypt.  Those docs are located here: https://letsencrypt.org/repository/
+If you don't agree to everything there, please do not install this software.
 
 If you've already set up the SITCH demo environment and you just want the
 updated app components for the ELK stack, use the release tagged `v0.9` from
