@@ -7,6 +7,7 @@ install:
 - export MY_IP=$(curl -s https://api.ipify.org)
 - curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
 script:
+- "ls -lah"
 - "sudo -E ./build.sh"
 env:
   global:
