@@ -6,7 +6,27 @@
 # Set env vars
 source .env
 
-# First we try to determine the distribution...
+# First, we need to make sure all of our required env vars are set...
+set BAIL_NO_ENV="NO"
+if [ ${SERVER_NAME} == "unset" ]; then
+  echo "Missing DNS_NAME in .env file!"
+  set BAIL_NO_ENV="YES"
+fi
+if [ ${CERTBOT_EMAIL} == "unset" ]; then
+  echo "Missing EMAIL in .env file!"
+  set BAIL_NO_ENV="YES"
+fi
+if [ ${SLACK_WEBHOOK} == "unset" ]; then
+  echo "Missing SLACK_WEB_HOOK in .env file!"
+  set BAIL_NO_ENV="YES"
+fi
+if [ ${BAIL_NO_ENV} == "YES" ]; then
+  echo "Exiting because of missing env vars!  Check .env file!"
+  exit 1
+fi
+
+
+# Next we try to determine the distribution...
 if [ -f /etc/lsb-release ]; then
   export `cat /etc/lsb-release | grep DISTRIB_ID | head -1`
 elif [ -f /etc/redhat-release ]; then
