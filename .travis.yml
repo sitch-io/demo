@@ -7,7 +7,10 @@ install:
 - export MY_IP=$(curl -s https://api.ipify.org)
 - curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
 script:
-- ls -lah
+- echo "Public IP address: ${MY_IP}"
+- echo "Waiting for IP to converge..."
+- sleep 20
+- echo "Our DNS name is currently pointing to `host ${DNS_NAME} | awk '{print $4}'`"
 - sudo -E ./build.sh
 env:
   global:
