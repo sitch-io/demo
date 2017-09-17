@@ -18,5 +18,5 @@ echo "Dumping letsencrypt logs..."
 docker run -it --rm \
   --name certyboaty \
   --entrypoint /bin/cat \
-  --cmd /var/log/letsencrypt/letsencrypt.log \
-  certboat
+  certboat \
+  /var/log/letsencrypt/letsencrypt.log
