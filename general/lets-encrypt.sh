@@ -12,8 +12,10 @@ docker run -it --rm \
       --no-eff-email \
       --agree-tos \
       -d ${SERVER_NAME} \
-      --debug \
+      --debug
+
 docker commit certbot certboat
+
 echo "Dumping letsencrypt logs..."
 docker run -it --rm \
   --name certyboaty \
