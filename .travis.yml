@@ -9,6 +9,8 @@ install:
 - sleep 10
 script:
 - ./ip_converge_hold.sh
+- source .env
+- sudo -E ./general/install-docker-compose.sh
 - sudo -E ./general/lets-encrypt.sh
 - sudo -E ./general/vault.sh
 env:
