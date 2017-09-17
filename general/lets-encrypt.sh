@@ -6,6 +6,7 @@ docker run -it --rm \
   -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
   docker.io/certbot/certbot:latest \
   certonly \
+    --network=host \
     --standalone \
     --email ${CERTBOT_EMAIL} \
     --no-eff-email \
