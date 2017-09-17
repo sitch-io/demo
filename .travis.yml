@@ -9,7 +9,8 @@ install:
 - sleep 10
 script:
 - ./ip_converge_hold.sh
-- sudo -E ./build.sh
+- sudo -E ./general/lets-encrypt.sh
+- sudo -E ./general/vault.sh
 env:
   global:
   - secure: RERsApEdgriDGBbcSOAQvOCq06xDdDlUVSKeQ2LjYQrOBJbNs7vVl2QLE3Chmr1H+AceqNlxByK+sVshJloFNjpGVZ8rmtmFNDNNRdOHe8///9s8nREBXHn3hezawOA2M9QTeJQ186Gy+4M6XlrKNi8PeJvvFHV2OU2zRGLmHALWkTOiq+uh7RTdwhQEfp2woMvqhWLHp/xeYx6RXTJpIOBKUQX1Gs0r9nFGd22HnkMiovaFXoxREZ0tx2z9aNHJIMunjiKouTzshRsoELYiJl1DE2BF9HjPwAwcOPIm00n7a0UGsMq57sX+oEmeUFEuhcT3/LFc4+Qzj3EcZFWREfEUE5yT4C5WnhYXTxmijUGUTgrsoDMu+AeONhDmiMvQNzTVx26NT6dvdzTyNmHfDfUvMJak+1iEbLyZdQEKnQsixhK81Rx2t55am5IkkL28Zha5qt0i6Y/ybMxn9GvZ+2Kj1gGtysb0SNoyjK306YWkzLdzww4crJeAkAPCxIXBasu+Oi8355lMZvshGfX7sD7ji4jqp46odWvv0v7NGoDxOU0urT/9OPzjeZGvWNh1J4w3Odn3pbLz5ijYoyjQUlqeWGOMQbQnFRx8Q2yPZiSPQ4HL2W6rAllp+f70DT+VarOAqRBg5jBicHEwrvaK4zpyAjt0V9Ar3rbzfg10Sxc=
