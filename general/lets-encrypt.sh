@@ -11,8 +11,7 @@ docker run -it --rm \
       --email ${CERTBOT_EMAIL} \
       --no-eff-email \
       --agree-tos \
-      -d ${SERVER_NAME} \
-      --debug
+      -d ${SERVER_NAME}
 
 docker commit certbot certboat
 
