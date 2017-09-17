@@ -4,12 +4,12 @@ docker run -it --rm \
   --name certbot \
   -v "/etc/letsencrypt:/etc/letsencrypt" \
   -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+  --network=host \
   docker.io/certbot/certbot:latest \
-  certonly \
-    --network=host \
-    --standalone \
-    --email ${CERTBOT_EMAIL} \
-    --no-eff-email \
-    --agree-tos \
-    -d ${SERVER_NAME} \
-    --debug
+    certonly \
+      --standalone \
+      --email ${CERTBOT_EMAIL} \
+      --no-eff-email \
+      --agree-tos \
+      -d ${SERVER_NAME} \
+      --debug
