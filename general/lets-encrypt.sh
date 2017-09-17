@@ -1,5 +1,5 @@
 echo "Setting up Let's Encrypt certificates..."
-docker run -it --rm \
+docker run -it \
   -p 443:443 -p 80:80 \
   --name certbot \
   -v "/etc/letsencrypt:/etc/letsencrypt" \
@@ -16,7 +16,7 @@ docker run -it --rm \
 docker commit certbot certboat
 
 echo "Dumping letsencrypt logs..."
-docker run -it --rm \
+docker run -it \
   --name certyboaty \
   --entrypoint /bin/cat \
   certboat \

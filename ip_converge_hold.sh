@@ -4,7 +4,8 @@ do
   echo "My IP is ${MY_IP}"
   echo "DNS says my IP is `host ${DNS_NAME} | awk '{print $4}'`"
   if [ `host ${DNS_NAME} | awk '{print $4}'` == "${MY_IP}" ]; then
-    echo "IP addresses converged. we can continue..."
+    echo "IP addresses converged. we can continue..."  # Just to be sure...
+    sleep 120
     exit 0
   fi
   echo "Will wait 30 seconds and check again."
