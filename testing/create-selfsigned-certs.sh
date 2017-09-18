@@ -12,8 +12,8 @@ mkdir -p /etc/letsencrypt/live/${LS_SERVERNAME}/
 
 ls /etc/certs/
 
-cat /etc/certs/ca.crt > /etc/letsencrypt/live/${LS_SERVERNAME}/fullchain.pem
-cat /etc/certs/${LS_SERVERNAME}.crt >> /etc/letsencrypt/live/${LS_SERVERNAME}/fullchain.pem
+# cat /etc/certs/ca.crt > /etc/letsencrypt/live/${LS_SERVERNAME}/fullchain.pem
+cat /etc/certs/${LS_SERVERNAME}.crt > /etc/letsencrypt/live/${LS_SERVERNAME}/fullchain.pem
 
 cat /etc/certs/${LS_SERVERNAME}.key >> /etc/letsencrypt/live/${LS_SERVERNAME}/privkey.pem
 
