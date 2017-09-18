@@ -17,7 +17,7 @@ echo Unsealing Vault...
 
 docker exec sitch_vault vault init --tls-skip-verify | tee ../vault_init
 
-grep '^Unseal' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
+grep '^Unseal Key' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
 grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
 
 echo "${warn}RECORD THESE KEYS AND THE ROOT TOKEN.${norm}"
