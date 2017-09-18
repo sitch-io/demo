@@ -1,12 +1,12 @@
 echo "Generating local self-signed certificates..."
 
-docker build -t localcerts .
+docker build -t localcerts:latest ./testing/
 
 docker run -it \
   -v /etc/certs:/opt/cert-export \
   -e LS_CLIENTNAME=$LS_CLIENTNAME \
   -e LS_SERVERNAME=$LS_SERVERNAME \
-  localcerts
+  localcerts:latest
 
 mkdir -p /etc/letsencrypt/live/${LS_SERVERNAME}/
 
