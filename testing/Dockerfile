@@ -4,5 +4,4 @@ COPY generate_certs.sh /
 
 run mkdir -p /opt/cert-export
 
-ENTRYPOINT "/bin/sh -c"
-CMD "/generate_certs.sh"
+CMD /bin/sh /generate_certs.sh
