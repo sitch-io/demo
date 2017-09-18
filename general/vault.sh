@@ -17,7 +17,7 @@ echo Unsealing Vault...
 
 docker exec sitch_vault vault init --tls-skip-verify | tee ../vault_init
 
-grep '^UKey' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
+grep '^Unseal' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
 grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
 
 echo "${warn}RECORD THESE KEYS AND THE ROOT TOKEN.${norm}"
@@ -28,7 +28,6 @@ for i in 1 2 3
 do
   set UNLOCK_KEY=`cat ../vault_unseal_keys | head -"$i" | tail -1`
   echo "Unlock key $i is ${UNLOCK_KEY}"
-  set UNLOCK_CMD="vault unseal --tls-skip-verify ${UNLOCK_KEY}"
-  docker exec -it sitch_vault `echo ${UNOCK_CMD}`
+  docker exec -it sitch_vault vault unseal --tls-skip-verify "${UNLOCK_KEY}"
   sleep 1
 done
