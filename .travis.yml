@@ -11,7 +11,7 @@ script:
 - ./testing/ip_converge_hold.sh
 - source .env
 - sudo -E ./general/install-docker-compose.sh
-- sudo -E ./testing/create-ss-certs.sh
+- sudo -E ./testing/create-selfsigned-certs.sh
 - sudo -E ./general/vault.sh
 env:
   global:
