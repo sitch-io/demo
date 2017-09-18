@@ -14,6 +14,7 @@ script:
 - sudo -E ./testing/create-selfsigned-certs.sh
 - sudo -E ./general/vault.sh
 - export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
+- sudo -E echo "127.0.0.1 ${DNS_NAME}" >> /etc/hosts
 - sudo -E ./general/logstash.sh
 - docker-compose -f ../docker-compose.yml up -d
 - sleep 60
