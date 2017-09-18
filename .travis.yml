@@ -3,17 +3,15 @@ sudo: required
 services:
 - docker
 install:
-- sudo apt-get update && sudo apt-get install -y curl linux-image-extra-$(uname -r) linux-image-extra-virtual 
+- sudo apt-get update && sudo apt-get install -y curl linux-image-extra-$(uname -r) linux-image-extra-virtual
 - export MY_IP=$(curl -s https://api.ipify.org)
 - curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
 - sleep 10
 script:
-- ./ip_converge_hold.sh
-- sudo iptables -L
+- ./testing/ip_converge_hold.sh
 - source .env
 - sudo -E ./general/install-docker-compose.sh
-- sudo -E ./general/lets-encrypt.sh
-- sudo iptables -L
+- sudo -E ./testing/create-ss-certs.sh
 - sudo -E ./general/vault.sh
 env:
   global:
