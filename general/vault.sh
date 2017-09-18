@@ -15,7 +15,7 @@ sleep 5
 
 echo Unsealing Vault...
 
-docker exec sitch_vault vault init --tls-skip-verify | tee ../vault_init
+docker exec sitch_vault vault init --tls-skip-verify > ../vault_init
 
 grep '^Unseal Key' ../vault_init | awk '{print $4}' > ../vault_unseal_keys
 grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
@@ -37,3 +37,5 @@ do
   docker exec -it sitch_vault vault unseal --tls-skip-verify "${UNLOCK_KEY}"
   sleep 1
 done
+
+export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
