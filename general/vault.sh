@@ -30,9 +30,9 @@ echo "${warn}RECORD THESE KEYS AND THE ROOT TOKEN.${norm}"
 echo "${warn}For your convenience, they are located in vault_init, vault_unseal_keys, and vault_root_token.${norm}"
 echo "${warn}To be extra safe, use srm to delete these files permanently, once you havve securely recorded their contents.${norm}"
 
-for i in 2 3 4
+for i in "2" "3" "4"
 do
-  set UNLOCK_KEY=`cat ../vault_unseal_keys | head -"$i" | tail -1`
+  export UNLOCK_KEY=`cat ../vault_unseal_keys | head -${i} | tail -1`
   echo "Unlock key $i is ${UNLOCK_KEY}"
   docker exec -it sitch_vault vault unseal --tls-skip-verify "${UNLOCK_KEY}"
   sleep 1
