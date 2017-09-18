@@ -1,10 +1,9 @@
-#!/bin/sh
+echo "Move to easy-rsa directory..."
 cd /usr/share/easy-rsa
 
 ./easyrsa init-pki
 ./easyrsa build-ca nopass
 ./easyrsa build-server-full $LS_SERVERNAME nopass
-# ./easyrsa build-client-full $LS_CLIENTNAME nopass
 
 export CA_CERT=/usr/share/easy-rsa/pki/ca.crt
 export SERVER_CERT=/usr/share/easy-rsa/pki/issued/$LS_SERVERNAME.crt
