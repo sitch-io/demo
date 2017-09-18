@@ -27,6 +27,8 @@ echo "${warn}To be extra safe, use srm to delete these files permanently, once y
 for i in 1 2 3
 do
   set UNLOCK_KEY=`cat ../vault_unseal_keys | head -"$i" | tail -1`
-  docker exec -it sitch_vault vault unseal --tls-skip-verify ${UNOCK_KEY}
+  echo "Unlock key $i is ${UNLOCK_KEY}"
+  set UNLOCK_CMD="vault unseal --tls-skip-verify ${UNLOCK_KEY}"
+  docker exec -it sitch_vault `echo ${UNOCK_CMD}`
   sleep 1
 done
