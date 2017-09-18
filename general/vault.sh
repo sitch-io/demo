@@ -20,6 +20,12 @@ docker exec sitch_vault vault init --tls-skip-verify | tee ../vault_init
 grep '^Unseal Key' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
 grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
 
+echo "Vault Unseal Keys:"
+cat ../vault_unseal_keys
+
+echo "Vault Root Token:"
+cat ../vault_root_token
+
 echo "${warn}RECORD THESE KEYS AND THE ROOT TOKEN.${norm}"
 echo "${warn}For your convenience, they are located in vault_init, vault_unseal_keys, and vault_root_token.${norm}"
 echo "${warn}To be extra safe, use srm to delete these files permanently, once you havve securely recorded their contents.${norm}"
