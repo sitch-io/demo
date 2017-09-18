@@ -11,9 +11,11 @@ docker run -d  \
   --name sitch_vault \
   vault:v0.6.0 server
 
+sleep 5
+
 echo Unsealing Vault...
 
-echo `docker exec sitch_vault vault init --tls-skip-verify` | tee ../.vault_init
+docker exec sitch_vault vault init --tls-skip-verify
 
 grep '^UKey' ../vault_init | awk '{print $3}' > ../vault_unseal_keys
 grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
