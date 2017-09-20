@@ -9,7 +9,7 @@ install:
 - echo ${PRIMARY_INTERFACE_IP}
 - nslookup ${PRIMARY_INTERFACE_IP}
 - export MY_IP=${PRIMARY_INTERFACE_IP}
-- echo '${PRIMARY_INTERFACE_IP} ${DNS_NAME}' >> ~/.hosts
+- echo "${PRIMARY_INTERFACE_IP} ${DNS_NAME}" >> ~/.hosts
 - export HOSTALIASES=~/.hosts
 - cat ${HOSTALIASES}
 - sleep 10
