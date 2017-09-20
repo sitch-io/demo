@@ -3,7 +3,7 @@ sudo: required
 services:
 - docker
 install:
-- ip route
+- sudo apt-get update && sudo apt-get install linux-image-extra-$(uname -r) linux image extra-virtual
 - export DEFAULT_INTERFACE=eth0
 - export PRIMARY_INTERFACE_IP=`ip addr show dev ${DEFAULT_INTERFACE} | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'`
 - echo ${PRIMARY_INTERFACE_IP}
