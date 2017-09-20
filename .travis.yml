@@ -6,9 +6,9 @@ install:
 - export DEFAULT_INTERFACE=`ip route | grep ^default | head -1 | awk '{print $5}'`
 - export PRIMARY_INTERFACE_IP=`ip addr show dev ${DEFAULT_INTERFACE} | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'`
 - echo ${PRIMARY_INTERFACE_IP}
-- curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
+- curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${PRIMARY_INTERFACE_IP}
 - sudo apt-get update && sudo apt-get install -y curl linux-image-extra-$(uname -r) linux-image-extra-virtual
-- export MY_IP=$(curl -s https://api.ipify.org)
+- export MY_IP=${PRIMARY_INTERFACE_IP}
 - sleep 10
 script:
 - ./testing/ip_converge_hold.sh
@@ -17,7 +17,6 @@ script:
 - sudo -E ./testing/create-selfsigned-certs.sh
 - sudo -E ./general/vault.sh
 - export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
-- sudo -E echo "127.0.0.1 ${DNS_NAME}" >> /etc/hosts
 - sudo -E ./general/logstash.sh
 - docker-compose -f ../docker-compose.yml up -d
 - sleep 60
