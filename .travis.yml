@@ -5,7 +5,7 @@ services:
 install:
 - export DEFAULT_INTERFACE=`ip route | grep ^default | head -1 | awk '{print $5}'`
 - export PRIMARY_INTERFACE_IP=`ip addr show dev ${DEFAULT_INTERFACE} | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'`
-- echo ${PRIMARY_IP_ADDRESS}
+- echo ${PRIMARY_INTERFACE_IP}
 - curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${MY_IP}
 - sudo apt-get update && sudo apt-get install -y curl linux-image-extra-$(uname -r) linux-image-extra-virtual
 - export MY_IP=$(curl -s https://api.ipify.org)
