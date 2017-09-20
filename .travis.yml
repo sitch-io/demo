@@ -20,6 +20,7 @@ script:
 - sudo -E ./testing/create-selfsigned-certs.sh
 - sudo -E ./general/vault.sh
 - export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
+- netstat -putan
 - sudo -E ./general/logstash.sh
 - docker-compose -f ../docker-compose.yml up -d
 - sleep 60

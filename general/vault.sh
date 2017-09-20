@@ -6,7 +6,6 @@ echo Starting Vault...
 docker run -d  \
   --cap-add=IPC_LOCK \
   -p 8200:8200  \
-  --net=host \
   -v /etc/letsencrypt/:/etc/letsencrypt/ \
   -e 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/'${SERVER_NAME}'/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/'${SERVER_NAME}'/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}' \
   --name sitch_vault \
