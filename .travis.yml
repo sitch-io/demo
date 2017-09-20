@@ -6,7 +6,7 @@ install:
 - export DEFAULT_INTERFACE=`ip route | grep ^default | head -1 | awk '{print $5}'`
 - export PRIMARY_INTERFACE_IP=`ip addr show dev ${DEFAULT_INTERFACE} | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'`
 - echo ${PRIMARY_INTERFACE_IP}
-- nslookup ${PRIMARY_ITERFACE_IP}
+- nslookup ${PRIMARY_INTERFACE_IP
 - export MY_IP=${PRIMARY_INTERFACE_IP}
 - echo '${PRIMARY_INTERFACE_IP} ${DNS_NAME}' >> ~/.hosts
 - export HOSTALIASES=~/.hosts
