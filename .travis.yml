@@ -13,7 +13,7 @@ install:
 - export HOSTALIASES=~/.hosts
 - cat ${HOSTALIASES}
 - sleep 10
-- ping -c 5 ${DNS_NAME}
+- host ${DNS_NAME}
 script:
 - source .env
 - sudo -E ./general/install-docker-compose.sh
