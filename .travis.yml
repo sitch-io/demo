@@ -22,7 +22,7 @@ script:
 - export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
 - netstat -putan
 - sudo -E ./general/logstash.sh
-- docker-compose -f ../docker-compose.yml up -d
+- docker-compose up -d
 - sleep 60
 - docker ps
 - export RUNNING_CONTAINERS=`docker ps | grep -v CONTA | wc -l`
