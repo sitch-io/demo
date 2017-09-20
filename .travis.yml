@@ -6,11 +6,10 @@ install:
 - export DEFAULT_INTERFACE=`ip route | grep ^default | head -1 | awk '{print $5}'`
 - export PRIMARY_INTERFACE_IP=`ip addr show dev ${DEFAULT_INTERFACE} | grep 'inet ' | awk '{print $2}' | awk -F/ '{print $1}'`
 - echo ${PRIMARY_INTERFACE_IP}
-- curl https://${NOIP_U}:${NOIP_P}@dynupdate.no-ip.com/nic/update?hostname=${DNS_NAME}&myip=${PRIMARY_INTERFACE_IP}
+- nslookup ${PRIMARY_ITERFACE_IP}
 - export MY_IP=${PRIMARY_INTERFACE_IP}
 - sleep 10
 script:
-- ./testing/ip_converge_hold.sh
 - source .env
 - sudo -E ./general/install-docker-compose.sh
 - sudo -E ./testing/create-selfsigned-certs.sh
