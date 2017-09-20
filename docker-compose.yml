@@ -5,7 +5,7 @@ services:
     image: docker.io/elasticsearch:5.5.2
     container_name: sitch-elasticsearch
     logging:
-      driver: journald
+      driver: syslog
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
@@ -16,7 +16,7 @@ services:
     image: docker.io/sitch/logstash:v0.10
     container_name: sitch-logstash
     logging:
-      driver: journald
+      driver: syslog
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -42,7 +42,7 @@ services:
     image: docker.io/kibana:5.5.1
     container_name: sitch-kibana
     logging:
-      driver: journald
+      driver: syslog
     links:
       - "elasticsearch:9200"
     environment:
@@ -56,7 +56,7 @@ services:
     image: docker.io/influxdb:1.2.4
     container_name: sitch-influxdb
     logging:
-      driver: journald
+      driver: syslog
     environment:
       INFLUXDB_GRAPHITE_ENABLED: "true"
     volumes:
@@ -67,7 +67,7 @@ services:
     image: docker.io/chronograf:1.3
     container_name: sitch-chronograf
     logging:
-      driver: journald
+      driver: syslog
     environment:
       INFLUXDB_URL: http://influxdb:8086
       KAPACITOR_URL: http://kapacitor:9092
@@ -81,7 +81,7 @@ services:
     image: docker.io/kapacitor:1.3.0
     container_name: sitch-kapacitor
     logging:
-      driver: journald
+      driver: syslog
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
@@ -97,7 +97,7 @@ services:
     image: docker.io/sitch/web:v0.9
     container_name: sitch-web
     logging:
-      driver: journald
+      driver: syslog
     ports:
       - "1000:1000"
       - "8443:8443"
