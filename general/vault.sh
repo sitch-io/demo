@@ -16,16 +16,16 @@ sleep 5
 
 echo Unsealing Vault...
 
-docker exec sitch_vault vault init --tls-skip-verify > ../vault_init
+docker exec sitch_vault vault init --tls-skip-verify > .vault_init
 
-grep '^Unseal Key' ../vault_init | awk '{print $4}' > ../vault_unseal_keys
-grep '^Initial Root Token' ../vault_init | awk '{print $4}' > ../vault_root_token
+grep '^Unseal Key' ../vault_init | awk '{print $4}' > .vault_unseal_keys
+grep '^Initial Root Token' ../vault_init | awk '{print $4}' > .vault_root_token
 
 echo "Vault Unseal Keys:"
-cat ../vault_unseal_keys
+cat .vault_unseal_keys
 
 echo "Vault Root Token:"
-cat ../vault_root_token
+cat .vault_root_token
 
 echo "${warn}RECORD THESE KEYS AND THE ROOT TOKEN.${norm}"
 echo "${warn}For your convenience, they are located in vault_init, vault_unseal_keys, and vault_root_token.${norm}"
@@ -33,10 +33,10 @@ echo "${warn}To be extra safe, use srm to delete these files permanently, once y
 
 for i in "2" "3" "4"
 do
-  export UNLOCK_KEY=`cat ../vault_unseal_keys | head -${i} | tail -1`
+  export UNLOCK_KEY=`cat .vault_unseal_keys | head -${i} | tail -1`
   echo "Unlock key $i is ${UNLOCK_KEY}"
   docker exec -it sitch_vault vault unseal --tls-skip-verify "${UNLOCK_KEY}"
   sleep 1
 done
 
-export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
+export VAULT_TOKEN=`cat .vault_root_token | head -1 | tail -1`
