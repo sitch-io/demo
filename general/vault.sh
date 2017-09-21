@@ -18,8 +18,8 @@ echo Unsealing Vault...
 
 docker exec sitch_vault vault init --tls-skip-verify > .vault_init
 
-grep '^Unseal Key' ../vault_init | awk '{print $4}' > .vault_unseal_keys
-grep '^Initial Root Token' ../vault_init | awk '{print $4}' > .vault_root_token
+grep '^Unseal Key' .vault_init | awk '{print $4}' > .vault_unseal_keys
+grep '^Initial Root Token' .vault_init | awk '{print $4}' > .vault_root_token
 
 echo "Vault Unseal Keys:"
 cat .vault_unseal_keys
