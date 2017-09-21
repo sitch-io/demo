@@ -54,6 +54,8 @@ case "${DISTRIB_ID}" in
         exit 1
 esac
 
+# Install docker-compose...
+/bin/bash ./general/install-docker-compose.sh
 # Get letsencrypt certs...
 /bin/bash ./general/lets-encrypt.sh
 
