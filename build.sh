@@ -59,7 +59,12 @@ esac
 # Get letsencrypt certs...
 /bin/bash ./general/lets-encrypt.sh
 
+# We bring up the stack, knowing that Logstash will be in a restart loop until
+# seeded certs are present in Vault.
+/usr/local/bin/docker-compose up -d
+
 # Requires copying Vault keys and root token, then pasting 3 keys back
+
 /bin/bash ./general/vault.sh
 
 sleep 5
@@ -68,5 +73,3 @@ sleep 5
 # read VAULT_TOKEN
 # export VAULT_TOKEN
 /bin/bash ./general/logstash.sh
-
-/usr/local/bin/docker-compose up -d

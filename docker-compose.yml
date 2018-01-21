@@ -1,11 +1,25 @@
 version: '2'
-
 services:
+  vault:
+    image: docker.io/vault:v0.6.0
+    cotainer_name: sitch_vault
+    environment:
+      VAULT_LOCAL_CONFIG: '{"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/'${SERVER_NAME}'/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/'${SERVER_NAME}'/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}'
+      SERVER_NAME: ${SERVER_NAME}
+    volmes:
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    networks:
+      sitch_elk:
+        aliases:
+          - ${SERVER_NAME}
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 8200:8200
+    - restart: no
   elasticsearch:
     image: docker.io/elasticsearch:5.5.2
     container_name: sitch-elasticsearch
-    logging:
-      driver: syslog
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     volumes:
@@ -15,14 +29,13 @@ services:
   logstash:
     image: docker.io/sitch/logstash:v0.10
     container_name: sitch-logstash
-    logging:
-      driver: syslog
     ports:
       - "5000:5000"
       - "5001:5001"
     links:
       - "elasticsearch:9200"
       - "influxdb:8086"
+      - "vault:8200"
     environment:
       ES_URL: http://elasticsearch:9200
       INFLUXDB_HOST: influxdb
@@ -38,11 +51,11 @@ services:
     depends_on:
       - elasticsearch
       - influxdb
+      - vault
+    - restart: always
   kibana:
     image: docker.io/kibana:5.5.1
     container_name: sitch-kibana
-    logging:
-      driver: syslog
     links:
       - "elasticsearch:9200"
     environment:
@@ -55,8 +68,6 @@ services:
   influxdb:
     image: docker.io/influxdb:1.2.4
     container_name: sitch-influxdb
-    logging:
-      driver: syslog
     environment:
       INFLUXDB_GRAPHITE_ENABLED: "true"
     volumes:
@@ -66,8 +77,6 @@ services:
   chronograf:
     image: docker.io/chronograf:1.3
     container_name: sitch-chronograf
-    logging:
-      driver: syslog
     environment:
       INFLUXDB_URL: http://influxdb:8086
       KAPACITOR_URL: http://kapacitor:9092
@@ -80,8 +89,6 @@ services:
   kapacitor:
     image: docker.io/kapacitor:1.3.0
     container_name: sitch-kapacitor
-    logging:
-      driver: syslog
     environment:
       KAPACITOR_HOSTNAME: kapacitor
       KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
@@ -96,8 +103,6 @@ services:
   web:
     image: docker.io/sitch/web:v0.9
     container_name: sitch-web
-    logging:
-      driver: syslog
     ports:
       - "1000:1000"
       - "8443:8443"
