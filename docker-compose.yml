@@ -16,6 +16,7 @@ services:
       - IPC_LOCK
     ports:
       - 8200:8200
+    command: server
     restart: "no"
   elasticsearch:
     image: docker.io/elasticsearch:5.5.2
