@@ -26,6 +26,7 @@ script:
 - netstat -putan
 - sleep 60
 - docker ps
+- docker logs sitch-logstash
 - export RUNNING_CONTAINERS=`docker ps | grep -v CONTA | wc -l`
 - if [ "RUNNING_CONTAINERS" = "7" ]; then exit 0; else exit 1; fi
 env:
