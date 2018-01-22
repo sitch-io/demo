@@ -2,11 +2,11 @@ version: '2'
 services:
   vault:
     image: docker.io/vault:v0.6.0
-    cotainer_name: sitch_vault
+    container_name: sitch_vault
     environment:
-      VAULT_LOCAL_CONFIG: '{"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/'${SERVER_NAME}'/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/'${SERVER_NAME}'/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}'
+      VAULT_LOCAL_CONFIG: '{"backend": {"file": {"path": "/vault/file"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_cert_file": "/etc/letsencrypt/live/${SERVER_NAME}/fullchain.pem","tls_key_file":"/etc/letsencrypt/live/${SERVER_NAME}/privkey.pem"}},"default_lease_ttl": "7200h", "max_lease_ttl": "7200h"}'
       SERVER_NAME: ${SERVER_NAME}
-    volmes:
+    volumes:
       - /etc/letsencrypt/:/etc/letsencrypt/
     networks:
       sitch_elk:
@@ -16,7 +16,7 @@ services:
       - IPC_LOCK
     ports:
       - 8200:8200
-    - restart: no
+    restart: "no"
   elasticsearch:
     image: docker.io/elasticsearch:5.5.2
     container_name: sitch-elasticsearch
@@ -52,7 +52,7 @@ services:
       - elasticsearch
       - influxdb
       - vault
-    - restart: always
+    restart: always
   kibana:
     image: docker.io/kibana:5.5.1
     container_name: sitch-kibana
