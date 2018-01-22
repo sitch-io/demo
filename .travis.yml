@@ -19,7 +19,7 @@ script:
 - source .env
 - sudo -E ./general/install-docker-compose.sh
 - sudo -E ./testing/create-selfsigned-certs.sh
-- sudo -E ./general/build.sh
+- sudo -E ./build.sh
 - export VAULT_TOKEN=`cat ../vault_root_token | head -1 | tail -1`
 - echo ${VAULT_TOKEN}
 - curl https://${DNS_NAME}:8200/
