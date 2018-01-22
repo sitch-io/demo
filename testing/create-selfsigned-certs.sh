@@ -16,4 +16,6 @@ cat /etc/certs/${LS_SERVERNAME}.crt > /etc/letsencrypt/live/${LS_SERVERNAME}/ful
 
 cat /etc/certs/${LS_SERVERNAME}.key >> /etc/letsencrypt/live/${LS_SERVERNAME}/privkey.pem
 
+tree /etc/letsencrypt
+
 docker rmi localcerts
