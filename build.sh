@@ -66,6 +66,9 @@ echo "Sleep for 30s, give Vault time to go live."
 sleep 30
 docker ps -a
 docker logs sitch_vault
+echo "---LISTENING SERVICES---"
+netstat -putan | grep LISTEN
+echo "-------"
 # Requires copying Vault keys and root token, then pasting 3 keys back
 
 /bin/bash ./general/vault.sh
