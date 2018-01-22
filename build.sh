@@ -79,3 +79,6 @@ sleep 5
 # read VAULT_TOKEN
 # export VAULT_TOKEN
 /bin/bash ./general/logstash.sh
+
+# Now we docker-compose up with new env var for vault access.
+docker-compose up -d
