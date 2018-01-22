@@ -62,7 +62,10 @@ esac
 # We bring up the stack, knowing that Logstash will be in a restart loop until
 # seeded certs are present in Vault.
 /usr/local/bin/docker-compose up -d
-
+echo "Sleep for 30s, give Vault time to go live."
+sleep 30
+docker ps -a
+docker logs sitch_vault
 # Requires copying Vault keys and root token, then pasting 3 keys back
 
 /bin/bash ./general/vault.sh
