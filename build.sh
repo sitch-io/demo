@@ -81,5 +81,17 @@ sleep 5
 /bin/bash ./general/logstash.sh
 
 export VAULT_TOKEN=`cat ./vault_root_token | head -1 | tail -1`
+
+if [ "${VAULT_TOKEN}" == "" ]; then
+  echo "Unable to get vault token! \nTearing down environment, check your config and start again."
+  docker-compose down
+  exit 1
+fi
+
 # Now we docker-compose up with new env var for vault access.
 docker-compose up -d
+
+sleep 10
+
+docker ps
+echo "Build script is complete.  Please confirm that service is live by visiting the Kibana dashboard."
