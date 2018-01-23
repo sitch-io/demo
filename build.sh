@@ -87,12 +87,13 @@ echo "${info}Seeding Logstash:${norm}"
 echo "${info}------${norm}"
 echo "${info}Setting Vault token prior to fonal convergence of docker-compose:${norm}"
 export VAULT_TOKEN=`cat ./vault_root_token | head -1 | tail -1`
+echo "${info}Vault token: ${VAULT_TOKEN} ${norm}"
 if [ "${VAULT_TOKEN}" == "" ]; then
   echo "${warn}Unable to get vault token! \nTearing down environment, check your config and start again.${norm}"
   docker-compose down
   exit 1
 fi
-echo "------"
+echo "${info}------${norm}"
 
 # Now we docker-compose up with new env var for vault access.
 docker-compose up -d
