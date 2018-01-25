@@ -1,7 +1,7 @@
 echo Generating logstash certificates...
 
 docker run -it \
-  --net=host \
+  --net=sitch_elk \
   -e VAULT_URL=$VAULT_URL \
   -e VAULT_TOKEN=$VAULT_TOKEN \
   -e LS_CLIENTNAME=$LS_CLIENTNAME \
